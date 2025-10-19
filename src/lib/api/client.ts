@@ -24,14 +24,32 @@ export interface Job {
   };
 }
 
+export interface Bucket {
+  id: string;
+  name: string;
+  stage: string;
+  description?: string;
+  dataSizeBytes?: number;
+  rowsCount?: number;
+}
+
+export interface Table {
+  id: string;
+  name: string;
+  bucket: {
+    id: string;
+  };
+  dataSizeBytes: number;
+  rowsCount: number;
+}
+
 export interface StorageStats {
   tables: {
     count: number;
     bytes: number;
   };
-  files: {
+  buckets: {
     count: number;
-    bytes: number;
   };
 }
 
@@ -49,15 +67,13 @@ export interface Event {
 export interface Orchestration {
   id: string;
   name: string;
-  active: boolean;
-  crontabRecord?: string;
-  lastExecutedJob?: {
-    id: string;
-    status: string;
-    startTime: string;
-    endTime?: string;
+  description?: string;
+  isDisabled?: boolean;
+  configuration?: {
+    parameters?: {
+      tasks?: unknown[];
+    };
   };
-  nextScheduledTime?: string;
 }
 
 export interface ProjectInfo {
@@ -67,6 +83,10 @@ export interface ProjectInfo {
   created?: string;
   features?: string[];
   limits?: Record<string, unknown>;
+  defaultBranch?: {
+    id: string;
+    name: string;
+  };
 }
 
 export interface Token {
@@ -142,7 +162,7 @@ async function apiRequest<T>(endpoint: string): Promise<T> {
 // ============================================================================
 
 export async function getProjectInfo(): Promise<ProjectInfo> {
-  return apiRequest<ProjectInfo>("/v2/storage");
+  return apiRequest<ProjectInfo>("/v2/storage?exclude=componentDetails");
 }
 
 export async function getJobs(limit = 20, offset = 0): Promise<Job[]> {
@@ -150,7 +170,23 @@ export async function getJobs(limit = 20, offset = 0): Promise<Job[]> {
 }
 
 export async function getStorageStats(): Promise<StorageStats> {
-  return apiRequest<StorageStats>("/v2/storage/stats");
+  // The /v2/storage/stats endpoint doesn't exist
+  // Instead, fetch buckets and tables and calculate stats
+  const [tables] = await Promise.all([
+    apiRequest<Table[]>("/v2/storage/tables?include=columns"),
+  ]);
+
+  const totalBytes = tables.reduce((sum, table) => sum + (table.dataSizeBytes || 0), 0);
+
+  return {
+    tables: {
+      count: tables.length,
+      bytes: totalBytes,
+    },
+    buckets: {
+      count: 0, // We can add buckets count if needed
+    },
+  };
 }
 
 export async function getEvents(limit = 10): Promise<Event[]> {
@@ -158,7 +194,23 @@ export async function getEvents(limit = 10): Promise<Event[]> {
 }
 
 export async function getOrchestrations(): Promise<Orchestration[]> {
-  return apiRequest<Orchestration[]>("/v2/orchestrations");
+  // The /v2/orchestrations endpoint doesn't exist
+  // Instead, use the orchestrator configs endpoint with branch ID
+  try {
+    // First get project info to get the default branch ID
+    const projectInfo = await getProjectInfo();
+    const branchId = projectInfo.defaultBranch?.id || "default";
+
+    // Then get orchestrator configs for that branch
+    const orchestrations = await apiRequest<Orchestration[]>(
+      `/v2/storage/branch/${branchId}/components/keboola.orchestrator/configs`
+    );
+
+    return orchestrations;
+  } catch (error) {
+    console.error("Error fetching orchestrations:", error);
+    return [];
+  }
 }
 
 export async function getTokens(): Promise<Token[]> {

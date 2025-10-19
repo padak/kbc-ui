@@ -149,8 +149,8 @@ export function useOrchestrationStats() {
   const stats = orchestrations
     ? {
         total: orchestrations.length,
-        active: orchestrations.filter((o) => o.active).length,
-        inactive: orchestrations.filter((o) => !o.active).length,
+        active: orchestrations.filter((o) => !o.isDisabled).length,
+        inactive: orchestrations.filter((o) => o.isDisabled).length,
       }
     : undefined;
 
