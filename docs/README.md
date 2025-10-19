@@ -21,12 +21,15 @@ docs/
 │   ├── FEATURES_QUICK_START.md    Quick start guide
 │   └── HOW-TO-CHANGE-DESIGN-SYSTEM.md Design change workflow
 │
-└── research/             # 📚 REFERENCE - Use these when building features
-    ├── 02-modules/              49 module analyses (extractors, writers, flows)
-    ├── 06-api-contracts/        API clients, endpoints, patterns
-    ├── 04-components/           Design system components
-    ├── 05-workflows/            User workflows with screenshots
-    └── 07-state-management/     State patterns and migration guides
+└── research/             # 📚 REFERENCE - Research material
+    ├── legacy-ui/               Old Keboola UI research (109 files)
+    │   ├── 02-modules/          49 module analyses
+    │   ├── 06-api-contracts/    API clients and endpoints
+    │   ├── 04-components/       Design system components
+    │   ├── 05-workflows/        User workflows with screenshots
+    │   └── 07-state-management/ State patterns
+    └── new-ui/                  New UI research
+        └── flows/               Flow Builder research (3 files)
 ```
 
 ---
@@ -39,22 +42,22 @@ docs/
 - Check if there's a spec in `build-specs/` (there isn't one yet for Storage)
 
 **Step 2: Research the Old Implementation**
-1. **Module Analysis:** Read `research/02-modules/storage.md`
+1. **Module Analysis:** Read `research/legacy-ui/02-modules/storage.md`
    - Understand current features
    - See component structure
    - Review state management patterns
 
-2. **API Contracts:** Check `research/06-api-contracts/api-clients.md`
+2. **API Contracts:** Check `research/legacy-ui/06-api-contracts/api-clients.md`
    - Find Storage API endpoints
    - Understand request/response format
    - See authentication headers
 
-3. **User Workflows:** Review `research/05-workflows/02-storage-operations.md`
+3. **User Workflows:** Review `research/legacy-ui/05-workflows/02-storage-operations.md`
    - See how users navigate buckets/tables
    - Understand common operations
    - View UI screenshots
 
-4. **Components:** Check `research/04-components/`
+4. **Components:** Check `research/legacy-ui/04-components/`
    - See which components are used
    - Understand patterns (tables, modals, etc.)
 
@@ -88,29 +91,32 @@ The `research/` folder contains **109 files** documenting the original UI. Here'
 
 | Building... | Read these files... |
 |-------------|---------------------|
-| **Storage page** | `research/02-modules/storage.md`, `research/05-workflows/02-storage-operations.md`, `research/06-api-contracts/api-clients.md` |
-| **Flows page** | `research/02-modules/flows-v2.md`, `research/05-workflows/03-flow-creation-execution.md` |
-| **Dashboard** | `research/02-modules/home.md`, `research/05-workflows/01-dashboard-navigation.md` |
-| **Extractors** | `research/02-modules/EXTRACTORS_INDEX.md`, specific extractor files |
-| **Writers** | `research/02-modules/WRITERS_OVERVIEW.md`, specific writer files |
-| **Transformations** | `research/02-modules/transformations-v2.md`, `research/05-workflows/04-transformation-workflow.md` |
-| **API integration** | `research/06-api-contracts/api-clients.md`, `research/06-api-contracts/api-patterns.md` |
-| **Components** | `research/04-components/INDEX.md`, specific component files |
-| **State patterns** | `research/07-state-management/state-architecture.md` |
+| **Storage page** | `research/legacy-ui/02-modules/storage.md`, `research/legacy-ui/05-workflows/02-storage-operations.md`, `research/legacy-ui/06-api-contracts/api-clients.md` |
+| **Flows page** | `research/legacy-ui/02-modules/flows-v2.md`, `research/legacy-ui/05-workflows/03-flow-creation-execution.md`, `research/new-ui/flows/` (for new design) |
+| **Dashboard** | `research/legacy-ui/02-modules/home.md`, `research/legacy-ui/05-workflows/01-dashboard-navigation.md` |
+| **Extractors** | `research/legacy-ui/02-modules/EXTRACTORS_INDEX.md`, specific extractor files |
+| **Writers** | `research/legacy-ui/02-modules/WRITERS_OVERVIEW.md`, specific writer files |
+| **Transformations** | `research/legacy-ui/02-modules/transformations-v2.md`, `research/legacy-ui/05-workflows/04-transformation-workflow.md` |
+| **API integration** | `research/legacy-ui/06-api-contracts/api-clients.md`, `research/legacy-ui/06-api-contracts/api-patterns.md` |
+| **Components** | `research/legacy-ui/04-components/INDEX.md`, specific component files |
+| **State patterns** | `research/legacy-ui/07-state-management/state-architecture.md` |
 
 ### Key Files for Common Tasks
 
 **Understanding APIs:**
-- `research/06-api-contracts/api-clients.md` - All 14 API clients documented
-- `research/06-api-contracts/api-patterns.md` - Request/response patterns
+- `research/legacy-ui/06-api-contracts/api-clients.md` - All 14 API clients documented
+- `research/legacy-ui/06-api-contracts/api-patterns.md` - Request/response patterns
 
 **Understanding Features:**
-- `research/03-features/feature-catalog.md` - All 121 features listed
-- `research/03-features/complexity-assessment.md` - Effort estimates
+- `research/legacy-ui/03-features/feature-catalog.md` - All 121 features listed
+- `research/legacy-ui/03-features/complexity-assessment.md` - Effort estimates
 
 **Understanding User Needs:**
-- `research/05-workflows/*.md` - Real user workflows with screenshots
-- `research/03-features/user-journeys.md` - User personas and pain points
+- `research/legacy-ui/05-workflows/*.md` - Real user workflows with screenshots
+- `research/legacy-ui/03-features/user-journeys.md` - User personas and pain points
+
+**New UI Research:**
+- `research/new-ui/flows/` - Flow Builder research (React Flow, n8n patterns, AI integration)
 
 ---
 
@@ -125,9 +131,10 @@ The `research/` folder contains **109 files** documenting the original UI. Here'
 
 **Stuck on implementation?**
 - Check `implementation/` for current implementation guides
-- Search `research/02-modules/` for the relevant module
-- Check `research/06-api-contracts/` for API details
-- Review `research/05-workflows/` for user flows
+- Search `research/legacy-ui/02-modules/` for the relevant module
+- Check `research/legacy-ui/06-api-contracts/` for API details
+- Review `research/legacy-ui/05-workflows/` for user flows
+- Check `research/new-ui/` for new feature research (e.g., Flow Builder)
 
 ---
 
