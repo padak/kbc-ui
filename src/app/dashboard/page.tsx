@@ -5,11 +5,21 @@ import { useRouter } from "next/navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { CardSkeleton } from "@/components/ui/skeleton";
 import { getAuth, clearAuth } from "@/lib/api/auth";
+import { useJobStats, useStorageStats, useOrchestrationStats, useTokens } from "@/lib/api/queries";
+import { formatBytes } from "@/lib/api/client";
+import { RecentActivity } from "@/components/dashboard/recent-activity";
 
 export default function DashboardPage() {
   const router = useRouter();
   const [auth, setAuth] = useState<{ stackUrl: string; token: string } | null>(null);
+
+  // API hooks
+  const jobStats = useJobStats();
+  const storageStats = useStorageStats();
+  const orchestrationStats = useOrchestrationStats();
+  const tokens = useTokens();
 
   useEffect(() => {
     const credentials = getAuth();
@@ -58,98 +68,161 @@ export default function DashboardPage() {
           <h2 className="text-xl font-semibold mb-4">Project Overview</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Jobs Card */}
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium text-gray-600">Jobs</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Running</span>
-                    <Badge className="bg-yellow-100 text-yellow-800">2</Badge>
+            {jobStats.isLoading ? (
+              <CardSkeleton />
+            ) : jobStats.isError ? (
+              <Card>
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-sm font-medium text-gray-600">Jobs</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-red-600">Error loading jobs</p>
+                </CardContent>
+              </Card>
+            ) : (
+              <Card>
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-sm font-medium text-gray-600">Jobs</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm">Running</span>
+                      <Badge className="bg-yellow-100 text-yellow-800">
+                        {jobStats.data?.running ?? 0}
+                      </Badge>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm">Failed</span>
+                      <Badge className="bg-red-100 text-red-800">
+                        {jobStats.data?.failed ?? 0}
+                      </Badge>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm">Success</span>
+                      <Badge className="bg-green-100 text-green-800">
+                        {jobStats.data?.success ?? 0}
+                      </Badge>
+                    </div>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Failed</span>
-                    <Badge className="bg-red-100 text-red-800">0</Badge>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Success</span>
-                    <Badge className="bg-green-100 text-green-800">45</Badge>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            )}
 
             {/* Storage Card */}
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium text-gray-600">Storage</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Tables</span>
-                    <span className="font-semibold">234</span>
+            {storageStats.isLoading ? (
+              <CardSkeleton />
+            ) : storageStats.isError ? (
+              <Card>
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-sm font-medium text-gray-600">Storage</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-red-600">Error loading storage</p>
+                </CardContent>
+              </Card>
+            ) : (
+              <Card>
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-sm font-medium text-gray-600">Storage</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm">Tables</span>
+                      <span className="font-semibold">
+                        {storageStats.data?.tables?.count ?? 0}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm">Size</span>
+                      <span className="font-semibold">
+                        {formatBytes(storageStats.data?.tables?.bytes ?? 0)}
+                      </span>
+                    </div>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Size</span>
-                    <span className="font-semibold">12.3 GB</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            )}
 
             {/* Flows Card */}
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium text-gray-600">Flows</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Total</span>
-                    <span className="font-semibold">12</span>
+            {orchestrationStats.isLoading ? (
+              <CardSkeleton />
+            ) : orchestrationStats.isError ? (
+              <Card>
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-sm font-medium text-gray-600">Flows</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-red-600">Error loading flows</p>
+                </CardContent>
+              </Card>
+            ) : (
+              <Card>
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-sm font-medium text-gray-600">Flows</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm">Total</span>
+                      <span className="font-semibold">
+                        {orchestrationStats.data?.total ?? 0}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm">Active</span>
+                      <Badge className="bg-green-100 text-green-800">
+                        {orchestrationStats.data?.active ?? 0}
+                      </Badge>
+                    </div>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Active</span>
-                    <Badge className="bg-green-100 text-green-800">8</Badge>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            )}
 
             {/* Team Card */}
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium text-gray-600">Team</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Members</span>
-                    <span className="font-semibold">5</span>
+            {tokens.isLoading ? (
+              <CardSkeleton />
+            ) : tokens.isError ? (
+              <Card>
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-sm font-medium text-gray-600">Team</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-red-600">Error loading team</p>
+                </CardContent>
+              </Card>
+            ) : (
+              <Card>
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-sm font-medium text-gray-600">Team</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm">Members</span>
+                      <span className="font-semibold">
+                        {tokens.data?.length ?? 0}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm">Admin</span>
+                      <Badge className="bg-blue-100 text-blue-800">
+                        {tokens.data?.filter(t => t.admin).length ?? 0}
+                      </Badge>
+                    </div>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Active</span>
-                    <Badge className="bg-blue-100 text-blue-800">3</Badge>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            )}
           </div>
         </div>
 
         {/* Recent Activity */}
         <div>
           <h2 className="text-xl font-semibold mb-4">Recent Activity</h2>
-          <Card>
-            <CardContent className="pt-6">
-              <div className="text-center text-gray-500 py-8">
-                <p>Dashboard with live data coming soon...</p>
-                <p className="text-sm mt-2">This is a preview showing static data</p>
-              </div>
-            </CardContent>
-          </Card>
+          <RecentActivity />
         </div>
       </main>
     </div>
