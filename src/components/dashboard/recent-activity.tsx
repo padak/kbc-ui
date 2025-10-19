@@ -116,14 +116,14 @@ export function RecentActivity() {
 
           {/* Events list */}
           <div className="space-y-4">
-            {events.map((event) => {
+            {events.map((event, index) => {
               const Icon = getEventIcon(event.type);
               const iconColor = getEventIconColor(event.type);
               const badgeVariant = getEventBadgeVariant(event.type);
 
               return (
                 <div
-                  key={event.id}
+                  key={event.id || `event-${index}`}
                   className="relative flex gap-4 group hover:bg-accent/50 -mx-2 px-2 py-2 rounded-md transition-colors"
                 >
                   {/* Icon */}
