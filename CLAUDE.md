@@ -327,6 +327,86 @@ kbc-ui-padak/
 
 ---
 
+## ✅ Phase 6.5 Summary - Research Organization COMPLETE
+
+### What Was Accomplished
+
+Reorganized research documentation to separate legacy UI analysis from new UI research for better clarity and scalability.
+
+**Results:**
+- ✅ **112 files reorganized** (108 renames + 3 additions + 1 update)
+- ✅ **Clear separation** between old UI and new UI research
+- ✅ **Scalable structure** for future component research
+- ✅ **Git history preserved** (all renames tracked)
+
+**Changes Made:**
+
+1. **Legacy UI Research** → `docs/research/legacy-ui/` (109 files)
+   - All Phase 2-4 old UI analysis moved here
+   - 01-overview/ through 09-migration-plan/
+   - All meta-docs (PHASE_*.md, AGENT_PROMPTS.md, etc.)
+   - Entire old UI research from Phase 2-4
+
+2. **New UI Research** → `docs/research/new-ui/` (3 files)
+   - Component-specific research folders
+   - `flows/` - Flow Builder research (3 files)
+   - Future: `transformations/`, `storage/`, etc.
+
+3. **Updated Documentation**
+   - `docs/README.md` - All paths corrected
+   - Quick reference guide updated
+   - Usage examples updated
+
+### Documentation Organization Logic
+
+**Principle:** Separate research by purpose and timeline
+
+```
+docs/research/
+├── README.md              # Index and usage guide
+├── legacy-ui/             # OLD UI research (reference material)
+│   ├── 01-overview/       # Architecture, tech stack
+│   ├── 02-modules/        # 49 module analyses
+│   ├── 03-features/       # Feature catalog, priorities
+│   ├── 04-components/     # Design system components
+│   ├── 05-workflows/      # User workflows + screenshots
+│   ├── 06-api-contracts/  # API clients and endpoints
+│   ├── 07-state-management/ # State patterns
+│   ├── 08-screenshots/    # UI screenshots
+│   ├── 09-migration-plan/ # Migration strategy
+│   └── *.md               # Meta-docs (PHASE_*, AGENT_PROMPTS, etc.)
+└── new-ui/                # NEW UI research (active development)
+    ├── flows/             # Flow Builder research
+    ├── transformations/   # (Future) Transformations research
+    ├── storage/           # (Future) Storage research
+    └── [component]/       # (Future) Other component research
+```
+
+**When to Add New Research:**
+- **Legacy UI changes:** Update existing files in `legacy-ui/`
+- **New component research:** Create `new-ui/[component-name]/`
+- **New feature research:** Add files to appropriate `new-ui/[component]/`
+
+**Naming Convention:**
+- Component folders: lowercase, hyphenated (e.g., `flow-builder`, `data-catalog`)
+- Research files: UPPERCASE_SNAKE_CASE for summaries (e.g., `FLOW_BUILDER_COMPARISON.md`)
+- Detail files: lowercase with hyphens (e.g., `react-flow-integration.md`)
+
+**Benefits:**
+- ✅ Clear separation: Old (reference) vs New (active)
+- ✅ Scalable: Easy to add new component research
+- ✅ Maintainable: Related research stays together
+- ✅ Discoverable: Component-based organization
+
+### Key Commit
+
+**Commit:** `a2e4f72` - docs: reorganize research folder into legacy-ui and new-ui
+- 108 renames (legacy UI → legacy-ui/)
+- 3 additions (Flow Builder → new-ui/flows/)
+- 1 update (docs/README.md paths)
+
+---
+
 ## 📊 Complete Project Statistics
 
 ### Total Documentation & Implementation
@@ -358,31 +438,60 @@ kbc-ui-padak/
 
 ## 🗂️ Documentation Organization
 
-### 🤖 FOR AI SYSTEMS (87 files, ~50,000 lines)
-
-**Technical specifications for building the new UI:**
+### 📁 Current Structure (Phase 6.5)
 
 ```
 docs/
-├── 01-overview/              # System architecture
-├── 02-modules/               # Module implementation
-├── 03-features/              # Feature specifications
-├── 04-components/            # Design system
-├── 05-workflows/             # User interactions
-├── 06-api-contracts/         # API integration
-└── 07-state-management/      # State patterns
+├── README.md                 # Complete usage guide
+├── build-specs/              # 🔨 BUILD SPECS for new features
+│   ├── technical-stack.md
+│   ├── dashboard-spec.md
+│   ├── auth-flow.md
+│   ├── design-system.md
+│   └── implementation-plan.md
+├── implementation/           # 📝 IMPLEMENTATION GUIDES
+│   ├── CODE_REFERENCE.md
+│   ├── FEATURES_QUICK_START.md
+│   ├── FEATURES_IMPLEMENTATION.md
+│   ├── DESIGN_SYSTEM_AUDIT.md
+│   └── HOW-TO-CHANGE-DESIGN-SYSTEM.md
+└── research/                 # 📚 RESEARCH MATERIAL
+    ├── legacy-ui/            # Old UI reference (109 files)
+    │   ├── 01-overview/
+    │   ├── 02-modules/       # 49 module analyses
+    │   ├── 03-features/
+    │   ├── 04-components/
+    │   ├── 05-workflows/
+    │   ├── 06-api-contracts/
+    │   ├── 07-state-management/
+    │   ├── 08-screenshots/
+    │   ├── 09-migration-plan/
+    │   └── *.md              # Meta-docs
+    └── new-ui/               # New UI research (3+ files)
+        └── flows/            # Flow Builder research
 ```
 
-### 👥 FOR HUMANS (15 files, ~2,000 lines)
+### 🤖 FOR AI SYSTEMS
 
-**Strategic planning and context:**
+**Legacy UI Research** (`docs/research/legacy-ui/`):
+- **109 files** documenting old Keboola UI
+- Use as reference for building new features
+- API contracts, component patterns, user workflows
 
-```
-docs/
-├── PHASE_1-4_COMPLETE.md     # Project history
-├── MODERNIZATION_ASSESSMENT.md  # Strategy
-└── 09-migration-plan/        # Implementation plan
-```
+**New UI Research** (`docs/research/new-ui/`):
+- **Component-specific** modern research
+- Flow Builder: React Flow, n8n patterns, AI integration
+- Future: transformations/, storage/, etc.
+
+### 👥 FOR HUMANS
+
+**Build Specs** (`docs/build-specs/`):
+- Technical specifications for AI to build from
+- Dashboard, auth, design system specs
+
+**Implementation Guides** (`docs/implementation/`):
+- Documentation of what was actually built
+- Code organization, quick start, feature guides
 
 ---
 
@@ -440,42 +549,45 @@ docs/
 **Recommended Reading Order:**
 
 1. **Start with Overview**
-   - `docs/01-overview/architecture-overview.md` - System structure
-   - `docs/01-overview/technology-stack.md` - Tech inventory
+   - `docs/research/legacy-ui/01-overview/architecture-overview.md` - System structure
+   - `docs/research/legacy-ui/01-overview/technology-stack.md` - Tech inventory
 
 2. **Understand Features**
-   - `docs/03-features/feature-catalog.md` - All 121 features
-   - `docs/03-features/feature-priority-matrix.md` - Build order
+   - `docs/research/legacy-ui/03-features/feature-catalog.md` - All 121 features
+   - `docs/research/legacy-ui/03-features/feature-priority-matrix.md` - Build order
 
 3. **Learn Components**
-   - `docs/04-components/INDEX.md` - Design system
+   - `docs/research/legacy-ui/04-components/INDEX.md` - Design system
 
 4. **Study Implementation**
-   - `docs/02-modules/[module-name].md` - Module details
-   - `docs/05-workflows/[workflow-name].md` - User behavior
+   - `docs/research/legacy-ui/02-modules/[module-name].md` - Module details
+   - `docs/research/legacy-ui/05-workflows/[workflow-name].md` - User behavior
 
 5. **Integrate**
-   - `docs/06-api-contracts/api-clients.md` - API integration
-   - `docs/07-state-management/state-architecture.md` - State patterns
+   - `docs/research/legacy-ui/06-api-contracts/api-clients.md` - API integration
+   - `docs/research/legacy-ui/07-state-management/state-architecture.md` - State patterns
+
+6. **New UI Research**
+   - `docs/research/new-ui/flows/` - Flow Builder modern design (React Flow, n8n, AI)
 
 ### For Human Teams Planning Migration
 
 **Recommended Reading Order:**
 
 1. **Understand Project**
-   - `docs/PHASE_1_COMPLETE.md` through `PHASE_4_COMPLETE.md`
+   - `docs/research/legacy-ui/PHASE_1_COMPLETE.md` through `PHASE_4_COMPLETE.md`
 
 2. **Strategic Direction**
-   - `docs/MODERNIZATION_ASSESSMENT.md` - 3 options, AI-First recommended
+   - `docs/research/legacy-ui/MODERNIZATION_ASSESSMENT.md` - 3 options, AI-First recommended
 
 3. **Migration Plan**
-   - `docs/09-migration-plan/migration-strategy.md` - Overall approach
-   - `docs/09-migration-plan/phased-approach.md` - Detailed phases
-   - `docs/09-migration-plan/risk-assessment.md` - Risks & mitigation
+   - `docs/research/legacy-ui/09-migration-plan/migration-strategy.md` - Overall approach
+   - `docs/research/legacy-ui/09-migration-plan/phased-approach.md` - Detailed phases
+   - `docs/research/legacy-ui/09-migration-plan/risk-assessment.md` - Risks & mitigation
 
 4. **Resource Planning**
-   - `docs/03-features/complexity-assessment.md` - Effort estimates
-   - `docs/03-features/user-journeys.md` - User pain points
+   - `docs/research/legacy-ui/03-features/complexity-assessment.md` - Effort estimates
+   - `docs/research/legacy-ui/03-features/user-journeys.md` - User pain points
 
 ---
 
@@ -484,19 +596,22 @@ docs/
 ### Most Important Files
 
 **For AI Systems:**
-1. `01-overview/architecture-overview.md` - System overview
-2. `03-features/feature-catalog.md` - What to build
-3. `04-components/INDEX.md` - Components to use
-4. `02-modules/flows-v2.md` - Complex feature example
+1. `docs/research/legacy-ui/01-overview/architecture-overview.md` - System overview
+2. `docs/research/legacy-ui/03-features/feature-catalog.md` - What to build
+3. `docs/research/legacy-ui/04-components/INDEX.md` - Components to use
+4. `docs/research/legacy-ui/02-modules/flows-v2.md` - Complex feature example
+5. `docs/research/new-ui/flows/` - Modern Flow Builder research
 
 **For Humans:**
-1. `MODERNIZATION_ASSESSMENT.md` - Strategic direction
-2. `09-migration-plan/migration-strategy.md` - How to execute
-3. `03-features/feature-priority-matrix.md` - What to build first
-4. `09-migration-plan/risk-assessment.md` - Risks
+1. `docs/research/legacy-ui/MODERNIZATION_ASSESSMENT.md` - Strategic direction
+2. `docs/research/legacy-ui/09-migration-plan/migration-strategy.md` - How to execute
+3. `docs/research/legacy-ui/03-features/feature-priority-matrix.md` - What to build first
+4. `docs/research/legacy-ui/09-migration-plan/risk-assessment.md` - Risks
 
 **Navigation:**
 - `docs/README.md` - Complete documentation index
+- `docs/research/legacy-ui/` - Old UI reference material
+- `docs/research/new-ui/` - New UI research by component
 
 ---
 
@@ -729,21 +844,23 @@ make build
 - Polling: 5s (jobs), 30s (stats) - **To be implemented**
 
 **Git Status:**
-- Branch: `design/bmad-test`
-- Status: 4 commits ahead of origin
+- Branch: `feature/flow`
+- Status: 5 commits ahead of origin
 - Working tree: clean
 - Ready to: merge to main
 
-**Recent Commits (design/bmad-test):**
-1. `d10258d` - chore: minor fixes from sub-agent work
-2. `73ec6ba` - docs: update dashboard-spec.md to reflect actual implementation
-3. `43f1a98` - docs: reorganize folder structure for clarity and production readiness
-4. `ed8d9c4` - docs: consolidate documentation from 10 files to 4 files
+**Recent Commits (feature/flow):**
+1. `a2e4f72` - docs: reorganize research folder into legacy-ui and new-ui
+2. `d10258d` - chore: minor fixes from sub-agent work
+3. `73ec6ba` - docs: update dashboard-spec.md to reflect actual implementation
+4. `43f1a98` - docs: reorganize folder structure for clarity and production readiness
+5. `ed8d9c4` - docs: consolidate documentation from 10 files to 4 files
 
 **Documentation Improvements:**
 - ✅ Consolidated 10 files → 4 files (40% reduction in redundancy)
 - ✅ Reorganized into build-specs/, implementation/, research/
 - ✅ Updated dashboard-spec.md to match actual build (309 → 777 lines)
+- ✅ Research reorganized into legacy-ui/ and new-ui/ (112 files)
 - ✅ Production-ready structure for team collaboration
 
 *Foundation complete - Documentation production-ready - Ready to merge!*
