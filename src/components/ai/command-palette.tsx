@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { AISuggestions, AISuggestion } from "./ai-suggestions";
 import { Sparkles, Send } from "lucide-react";
@@ -54,7 +54,12 @@ export function CommandPalette({ open, onOpenChange }: CommandPaletteProps) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl p-0 gap-0 overflow-hidden border-0 bg-white/95 backdrop-blur-xl shadow-2xl">
         {/* Header with gradient */}
-        <DialogHeader className="sr-only">AI Assistant</DialogHeader>
+        <DialogHeader className="sr-only">
+          <DialogTitle>AI Assistant</DialogTitle>
+          <DialogDescription>
+            Ask questions about your data pipelines and get AI-powered assistance
+          </DialogDescription>
+        </DialogHeader>
         <div className="relative">
           {/* Gradient background */}
           <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 via-blue-500/10 to-cyan-500/10 pointer-events-none" />
