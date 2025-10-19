@@ -46,14 +46,9 @@ clean:
 
 # Design System
 sync-design:
-	@echo "⚠️  Design token sync is a manual process:"
+	@echo "🎨 Syncing design tokens from design-system.html..."
 	@echo ""
-	@echo "1. Open design-system.html in browser"
-	@echo "2. Edit CSS custom properties in <style> section"
-	@echo "3. Copy updated tokens to src/app/globals.css"
-	@echo "4. Update tailwind.config.ts if needed"
-	@echo ""
-	@echo "Automated sync coming soon!"
+	node scripts/sync-design-tokens.js
 
 design-preview:
 	@echo "Opening design system in browser..."

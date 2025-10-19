@@ -1,0 +1,318 @@
+# How to Change the Design System
+
+This guide shows you how to modify the design system (colors, spacing, typography, etc.) and automatically apply changes to the entire codebase.
+
+## Quick Start
+
+1. **Edit** `design-system.html` (change CSS custom properties)
+2. **Run** `make sync-design`
+3. **Restart** dev server to see changes
+
+That's it! All changes propagate automatically.
+
+---
+
+## Detailed Workflow
+
+### Step 1: Edit design-system.html
+
+Open `design-system.html` in your text editor and find the `:root {` section (around line 32).
+
+**Example: Change primary blue to orange**
+
+```css
+:root {
+  /* ===== COLOR SYSTEM ===== */
+  /* Primary - Keboola Blue */
+  --color-primary-50: #fff7ed;    /* Changed from blue to orange */
+  --color-primary-100: #ffedd5;
+  --color-primary-200: #fed7aa;
+  --color-primary-300: #fdba74;
+  --color-primary-400: #fb923c;
+  --color-primary-500: #f97316;   /* Main brand color - ORANGE! */
+  --color-primary-600: #ea580c;
+  --color-primary-700: #c2410c;
+  --color-primary-800: #9a3412;
+  --color-primary-900: #7c2d12;
+
+  /* ... rest of tokens ... */
+}
+```
+
+**What you can change:**
+- **Colors**: `--color-primary-*`, `--color-success-*`, `--color-error-*`, etc.
+- **Spacing**: `--space-unit` (changes ALL spacing proportionally)
+- **Typography**: `--font-size-*`, `--font-weight-*`, `--font-family-base`
+- **Border Radius**: `--radius-*`
+- **Shadows**: `--shadow-*`
+- **Transitions**: `--transition-*`
+
+### Step 2: Run the sync command
+
+```bash
+make sync-design
+```
+
+**What happens automatically:**
+1. Script extracts all CSS custom properties from `design-system.html`
+2. Updates `src/app/globals.css` with new values
+3. Shows you a summary of what changed
+
+**Output example:**
+```
+🎨 Design Token Sync
+====================
+
+📖 Reading design-system.html...
+🔍 Extracting CSS custom properties...
+✅ Extracted 87 design tokens
+
+📦 Color System: 45 tokens
+📦 Typography: 15 tokens
+📦 Spacing: 12 tokens
+📦 Border Radius: 8 tokens
+📦 Shadows: 5 tokens
+📦 Transitions: 3 tokens
+
+✏️  Updating globals.css...
+✅ Successfully updated globals.css!
+
+📝 Summary:
+   - Synced 87 design tokens
+   - Updated: src/app/globals.css
+
+🎯 Next steps:
+   1. Restart your dev server (if running)
+   2. Check the browser - colors should update automatically!
+   3. Run "git diff src/app/globals.css" to see changes
+
+✨ Design tokens synced successfully!
+```
+
+### Step 3: Restart dev server (if running)
+
+Stop your dev server (`Ctrl+C`) and restart:
+
+```bash
+make dev
+```
+
+**All components update automatically!** No need to edit individual files.
+
+### Step 4: Verify changes
+
+Open your browser and check:
+- Dashboard header (should show new primary color)
+- Buttons (all primary buttons use new color)
+- Links (all links use new color)
+- Badges (check primary badges)
+
+---
+
+## Example: Change Primary Color from Blue to Orange
+
+### Before (Blue)
+```css
+--color-primary-500: #1F8FFF;  /* Keboola Blue */
+```
+
+### After (Orange)
+```css
+--color-primary-500: #f97316;  /* Orange */
+```
+
+### Run sync:
+```bash
+make sync-design
+```
+
+### Result:
+- ✅ Header becomes orange
+- ✅ All buttons become orange
+- ✅ All links become orange
+- ✅ Primary badges become orange
+- ✅ Focus states become orange
+
+**Zero code changes needed!**
+
+---
+
+## Example: Increase All Spacing
+
+### Before
+```css
+--space-unit: 4px;  /* Base spacing unit */
+```
+
+### After
+```css
+--space-unit: 8px;  /* Double the spacing! */
+```
+
+### Run sync:
+```bash
+make sync-design
+```
+
+### Result:
+- ✅ All margins doubled
+- ✅ All padding doubled
+- ✅ All gaps doubled
+- ✅ Layout breathes more
+
+---
+
+## Example: Change Font
+
+### Before
+```css
+--font-family-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+```
+
+### After
+```css
+--font-family-base: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+```
+
+### Run sync:
+```bash
+make sync-design
+```
+
+### Result:
+- ✅ Entire app uses Inter font
+- ✅ All text updates automatically
+
+---
+
+## Why This Works
+
+**Design Tokens** are single source of truth:
+- Defined once in `design-system.html`
+- Synced to `src/app/globals.css` via automation
+- All components reference tokens (not hard-coded values)
+- Change token → everything updates
+
+**Architecture:**
+```
+design-system.html
+      ↓ (make sync-design)
+src/app/globals.css (CSS custom properties)
+      ↓ (Tailwind references)
+tailwind.config.ts
+      ↓ (Used in components)
+All React components
+```
+
+---
+
+## Previewing Design System
+
+To see all design tokens visually:
+
+```bash
+make design-preview
+```
+
+Opens `design-system.html` in your browser showing:
+- All color swatches
+- Typography examples
+- Spacing scale
+- Component examples
+- Live preview of all tokens
+
+---
+
+## Files Involved
+
+### Source of Truth
+- **`design-system.html`** - Edit this file to change design
+
+### Auto-Generated (Don't edit manually)
+- **`src/app/globals.css`** - Generated by `make sync-design`
+
+### Configuration (Rarely needs changes)
+- **`tailwind.config.ts`** - Maps CSS vars to Tailwind classes
+- **`scripts/sync-design-tokens.js`** - Automation script
+
+---
+
+## Common Changes
+
+### Change Primary Color
+```css
+/* In design-system.html */
+--color-primary-500: #YOUR_NEW_COLOR;
+--color-primary-600: #DARKER_SHADE;  /* For hover states */
+--color-primary-400: #LIGHTER_SHADE; /* For backgrounds */
+```
+Then: `make sync-design`
+
+### Add New Color (e.g., Purple)
+```css
+/* In design-system.html */
+--color-purple-500: #a855f7;
+--color-purple-700: #7e22ce;
+```
+Then:
+1. `make sync-design`
+2. Add to `tailwind.config.ts` if you want Tailwind classes
+
+### Change All Rounded Corners
+```css
+/* In design-system.html */
+--radius-base: 0.5rem;  /* Change this value */
+```
+Then: `make sync-design`
+
+---
+
+## Troubleshooting
+
+### Changes not showing?
+1. Make sure you ran `make sync-design`
+2. Restart dev server (`Ctrl+C` then `make dev`)
+3. Hard refresh browser (`Cmd+Shift+R` or `Ctrl+Shift+R`)
+
+### Script errors?
+```bash
+# Check if script exists
+ls -la scripts/sync-design-tokens.js
+
+# Run manually for more details
+node scripts/sync-design-tokens.js
+```
+
+### Want to see what changed?
+```bash
+git diff src/app/globals.css
+```
+
+---
+
+## Pro Tips
+
+1. **Preview first**: Run `make design-preview` to see design-system.html in browser
+2. **Test small changes**: Change one token at a time to see the impact
+3. **Use the scale**: Colors like `primary-500` are the base, adjust 400/600 for variants
+4. **Commit changes**: After syncing, commit both files:
+   ```bash
+   git add design-system.html src/app/globals.css
+   git commit -m "design: change primary color to orange"
+   ```
+
+---
+
+## What Gets Synced Automatically
+
+✅ All colors (primary, success, error, warning, info, neutral)
+✅ Typography (font families, sizes, weights, line heights)
+✅ Spacing scale (all margins, padding, gaps)
+✅ Border radius (all rounded corners)
+✅ Shadows (all box shadows)
+✅ Transitions (all animation speeds)
+✅ Z-index scale (layering)
+
+---
+
+**You're all set!** Go change some colors and see the magic happen. 🎨
