@@ -15,10 +15,6 @@ import {
   Trash2,
   Database,
   PlayCircle,
-  Wrench,
-  Package,
-  Users,
-  FileText,
   Clock,
 } from "lucide-react";
 import type { Event } from "@/lib/api/client";
@@ -43,7 +39,6 @@ interface EventStory {
   iconColor: string;
   bgColor: string;
   title: string;
-  description?: string;
   badgeVariant: "default" | "secondary" | "destructive" | "outline";
   badgeLabel: string;
 }
@@ -129,12 +124,6 @@ function categorizeEvent(event: Event): EventCategory {
 function createEventStory(event: Event): EventStory {
   const category = categorizeEvent(event);
   const component = event.component || "system";
-  const configId = event.configurationId;
-
-  // Extract meaningful info from results if available
-  const results = event.results || {};
-  const rowsProcessed = results.rows ? `${Number(results.rows).toLocaleString()} rows` : "";
-  const tablesAffected = results.tables ? `${results.tables} tables` : "";
 
   // Clean up component name for display
   const componentName = component
@@ -149,10 +138,9 @@ function createEventStory(event: Event): EventStory {
     case "job_success":
       return {
         icon: CheckCircle2,
-        iconColor: "text-success-700",
-        bgColor: "bg-success-50 dark:bg-success-700/30",
+        iconColor: "text-green-600",
+        bgColor: "bg-green-50 dark:bg-green-950/30",
         title: `${componentName} completed successfully`,
-        description: rowsProcessed ? `Processed ${rowsProcessed}` : configId || undefined,
         badgeVariant: "default",
         badgeLabel: "Success",
       };
@@ -160,10 +148,9 @@ function createEventStory(event: Event): EventStory {
     case "job_failure":
       return {
         icon: XCircle,
-        iconColor: "text-error-700",
-        bgColor: "bg-error-50 dark:bg-error-700/30",
+        iconColor: "text-red-600",
+        bgColor: "bg-red-50 dark:bg-red-950/30",
         title: `${componentName} failed`,
-        description: configId ? `Config: ${configId}` : "Check logs for details",
         badgeVariant: "destructive",
         badgeLabel: "Failed",
       };
@@ -171,10 +158,9 @@ function createEventStory(event: Event): EventStory {
     case "job_running":
       return {
         icon: PlayCircle,
-        iconColor: "text-primary-600",
-        bgColor: "bg-primary-50 dark:bg-primary-600/30",
+        iconColor: "text-blue-600",
+        bgColor: "bg-blue-50 dark:bg-blue-950/30",
         title: `${componentName} is running`,
-        description: configId || "Job in progress",
         badgeVariant: "default",
         badgeLabel: "Running",
       };
@@ -182,10 +168,9 @@ function createEventStory(event: Event): EventStory {
     case "config_created":
       return {
         icon: Plus,
-        iconColor: "text-success-700",
-        bgColor: "bg-success-50 dark:bg-success-700/30",
+        iconColor: "text-emerald-600",
+        bgColor: "bg-emerald-50 dark:bg-emerald-950/30",
         title: `New ${componentName} configuration created`,
-        description: configId || "Configuration ready to use",
         badgeVariant: "secondary",
         badgeLabel: "Created",
       };
@@ -193,10 +178,9 @@ function createEventStory(event: Event): EventStory {
     case "config_updated":
       return {
         icon: Settings,
-        iconColor: "text-warning-500",
-        bgColor: "bg-warning-50 dark:bg-warning-500/30",
+        iconColor: "text-amber-600",
+        bgColor: "bg-amber-50 dark:bg-amber-950/30",
         title: `${componentName} configuration updated`,
-        description: configId || "Settings changed",
         badgeVariant: "secondary",
         badgeLabel: "Updated",
       };
@@ -204,10 +188,9 @@ function createEventStory(event: Event): EventStory {
     case "config_deleted":
       return {
         icon: Trash2,
-        iconColor: "text-neutral-600",
-        bgColor: "bg-neutral-50 dark:bg-neutral-600/30",
+        iconColor: "text-gray-600",
+        bgColor: "bg-gray-50 dark:bg-gray-950/30",
         title: `${componentName} configuration deleted`,
-        description: configId || "Configuration removed",
         badgeVariant: "outline",
         badgeLabel: "Deleted",
       };
@@ -221,25 +204,13 @@ function createEventStory(event: Event): EventStory {
 
       return {
         icon: Database,
-        iconColor: "text-primary-600",
-        bgColor: "bg-primary-50 dark:bg-primary-600/30",
+        iconColor: "text-purple-600",
+        bgColor: "bg-purple-50 dark:bg-purple-950/30",
         title: storageTitle,
-        description: tablesAffected || (configId ? `Config: ${configId}` : isGenericList ? "Browsing data catalog" : event.type || undefined),
         badgeVariant: "secondary",
         badgeLabel: "Storage",
       };
     }
-
-    case "token_operation":
-      return {
-        icon: Users,
-        iconColor: "text-info-500",
-        bgColor: "bg-info-50 dark:bg-info-500/30",
-        title: `${componentName}: ${event.message}`,
-        description: configId ? `Config: ${configId}` : "Access management",
-        badgeVariant: "secondary",
-        badgeLabel: "Security",
-      };
 
     default:
       // For generic events, try to make them more descriptive
@@ -251,29 +222,28 @@ function createEventStory(event: Event): EventStory {
 
       return {
         icon: Activity,
-        iconColor: "text-neutral-600",
-        bgColor: "bg-neutral-50 dark:bg-neutral-600/30",
+        iconColor: "text-gray-600",
+        bgColor: "bg-gray-50 dark:bg-gray-950/30",
         title,
-        description: configId ? `Config: ${configId}` : event.type || undefined,
         badgeVariant: "secondary",
         badgeLabel: "Activity",
       };
   }
 }
 
-export function RecentActivity() {
-  const { data: events, isLoading, error } = useEvents(10);
+export function CompactRecentActivity() {
+  const { data: events, isLoading, error } = useEvents(5); // Only fetch 5 events
 
   if (isLoading) {
     return (
       <Card>
         <CardHeader>
-          <CardTitle className="text-xl font-semibold">Recent Activity</CardTitle>
+          <CardTitle className="text-lg font-semibold">Recent Activity</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex items-center justify-center py-12">
-            <Loader2 className="h-7 w-7 animate-spin text-muted-foreground" />
-            <span className="ml-3 text-base text-muted-foreground">
+          <div className="flex items-center justify-center py-8">
+            <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+            <span className="ml-2 text-sm text-muted-foreground">
               Loading activity...
             </span>
           </div>
@@ -286,14 +256,12 @@ export function RecentActivity() {
     return (
       <Card>
         <CardHeader>
-          <CardTitle className="text-xl font-semibold">Recent Activity</CardTitle>
+          <CardTitle className="text-lg font-semibold">Recent Activity</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex items-center justify-center py-12 text-destructive">
-            <AlertCircle className="h-6 w-6 mr-3" />
-            <span className="text-base">
-              Failed to load activity. Please try again.
-            </span>
+          <div className="flex items-center justify-center py-8 text-destructive">
+            <AlertCircle className="h-5 w-5 mr-2" />
+            <span className="text-sm">Failed to load activity</span>
           </div>
         </CardContent>
       </Card>
@@ -304,13 +272,12 @@ export function RecentActivity() {
     return (
       <Card>
         <CardHeader>
-          <CardTitle className="text-xl font-semibold">Recent Activity</CardTitle>
+          <CardTitle className="text-lg font-semibold">Recent Activity</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
-            <Activity className="h-8 w-8 mb-3 opacity-50" />
-            <span className="text-base font-medium">No recent activity</span>
-            <span className="text-sm mt-1">Events will appear here as they occur</span>
+          <div className="flex flex-col items-center justify-center py-8 text-muted-foreground">
+            <Activity className="h-6 w-6 mb-2 opacity-50" />
+            <span className="text-sm font-medium">No recent activity</span>
           </div>
         </CardContent>
       </Card>
@@ -320,80 +287,47 @@ export function RecentActivity() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-xl font-semibold">Recent Activity</CardTitle>
+        <CardTitle className="text-lg font-semibold">Recent Activity</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="relative">
-          {/* Timeline border - thicker and more prominent */}
-          <div className="absolute left-[19px] top-2 bottom-2 w-[2px] bg-gradient-to-b from-border via-border to-transparent" />
+        <div className="space-y-3">
+          {events.map((event, index) => {
+            const story = createEventStory(event);
+            const Icon = story.icon;
 
-          {/* Events list */}
-          <div className="space-y-2">
-            {events.map((event, index) => {
-              const story = createEventStory(event);
-              const Icon = story.icon;
-
-              return (
-                <div
-                  key={event.id || `event-${index}`}
-                  className="relative flex gap-4 group hover:bg-accent/50 -mx-3 px-3 py-3 rounded-lg transition-all duration-200 hover:shadow-sm cursor-pointer"
-                >
-                  {/* Icon with colored background */}
-                  <div className="relative z-10 flex-shrink-0">
-                    <div className={`rounded-full p-2 border-2 border-background shadow-sm ${story.bgColor}`}>
-                      <Icon className={`h-5 w-5 ${story.iconColor}`} />
-                    </div>
-                  </div>
-
-                  {/* Content - improved hierarchy and readability */}
-                  <div className="flex-1 min-w-0 space-y-2">
-                    {/* Title and timestamp row */}
-                    <div className="flex items-start justify-between gap-3">
-                      <h4 className="text-base font-semibold leading-tight text-foreground group-hover:text-primary transition-colors">
-                        {story.title}
-                      </h4>
-                      <div className="flex items-center gap-1 flex-shrink-0">
-                        <Clock className="h-3.5 w-3.5 text-muted-foreground" />
-                        <span className="text-sm font-medium text-muted-foreground">
-                          {getRelativeTime(event.created)}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Description text */}
-                    {story.description && (
-                      <p className="text-sm text-muted-foreground leading-relaxed">
-                        {story.description}
-                      </p>
-                    )}
-
-                    {/* Badges and metadata */}
-                    <div className="flex items-center gap-2 flex-wrap pt-1">
-                      <Badge variant={story.badgeVariant} className="text-xs font-semibold px-2.5 py-0.5">
-                        {story.badgeLabel}
-                      </Badge>
-                      {event.runId && (
-                        <span className="text-xs text-muted-foreground font-mono bg-muted/50 px-2 py-0.5 rounded">
-                          Run #{event.runId}
-                        </span>
-                      )}
-                    </div>
+            return (
+              <div
+                key={event.id || `event-${index}`}
+                className="flex items-start gap-3 group hover:bg-accent/50 -mx-3 px-3 py-2 rounded-md transition-all duration-200"
+              >
+                {/* Icon with colored background - smaller for compact view */}
+                <div className="flex-shrink-0">
+                  <div className={`rounded-full p-1.5 ${story.bgColor}`}>
+                    <Icon className={`h-4 w-4 ${story.iconColor}`} />
                   </div>
                 </div>
-              );
-            })}
-          </div>
-        </div>
 
-        {/* Show more indicator */}
-        {events.length >= 10 && (
-          <div className="mt-6 pt-4 border-t text-center">
-            <button className="text-sm text-primary hover:text-primary/80 font-medium transition-colors inline-flex items-center gap-2">
-              View all activity
-              <Activity className="h-4 w-4" />
-            </button>
-          </div>
-        )}
+                {/* Content - single line, compact */}
+                <div className="flex-1 min-w-0 flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-2 min-w-0 flex-1">
+                    <p className="text-sm font-medium text-foreground truncate">
+                      {story.title}
+                    </p>
+                    <Badge variant={story.badgeVariant} className="text-xs px-1.5 py-0 flex-shrink-0">
+                      {story.badgeLabel}
+                    </Badge>
+                  </div>
+                  <div className="flex items-center gap-1 flex-shrink-0">
+                    <Clock className="h-3 w-3 text-muted-foreground" />
+                    <span className="text-xs text-muted-foreground whitespace-nowrap">
+                      {getRelativeTime(event.created)}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </CardContent>
     </Card>
   );
