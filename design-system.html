@@ -75,6 +75,24 @@
       --color-info-500: #06b6d4;
       --color-info-700: #0e7490;
 
+      /* ===== AI THEME COLORS ===== */
+      /* AI Gradient - Purple/Blue/Cyan for AI-powered features */
+      --color-ai-purple: #a855f7;
+      --color-ai-blue: #3b82f6;
+      --color-ai-cyan: #06b6d4;
+      --color-ai-gradient: linear-gradient(135deg, #a855f7, #3b82f6, #06b6d4);
+      --color-ai-gradient-subtle: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(59, 130, 246, 0.1), rgba(6, 182, 212, 0.1));
+
+      /* AI Glow Effects */
+      --glow-ai: 0 0 20px rgba(168, 85, 247, 0.3);
+      --glow-ai-strong: 0 0 30px rgba(168, 85, 247, 0.5), 0 0 60px rgba(59, 130, 246, 0.3);
+
+      /* Success Celebration */
+      --color-success-glow: 0 0 20px rgba(34, 197, 94, 0.4);
+
+      /* Warning Highlight */
+      --color-warning-glow: 0 0 15px rgba(249, 115, 22, 0.3);
+
       /* ===== TYPOGRAPHY ===== */
       /* Font Families */
       --font-family-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -471,6 +489,45 @@
       font-size: var(--font-size-xs);
       color: var(--color-error-700);
     }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes shimmer {
+      0% {
+        background-position: -1000px 0;
+      }
+      100% {
+        background-position: 1000px 0;
+      }
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-4px);
+      }
+    }
+
+    @keyframes success-pulse {
+      0%, 100% {
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+      }
+      50% {
+        box-shadow: var(--color-success-glow);
+      }
+    }
+
+    .shimmer {
+      background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.2) 50%,
+        rgba(255, 255, 255, 0) 100%
+      );
+      background-size: 1000px 100%;
+      animation: shimmer 2s infinite;
+    }
   </style>
 </head>
 <body>
@@ -757,6 +814,90 @@
             <div class="component-example">
               <div class="component-label">Password Input</div>
               <input type="password" class="input" placeholder="Enter password...">
+            </div>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3 class="subsection-title">AI Components (NEW)</h3>
+          <div class="component-grid">
+            <div class="component-example">
+              <div class="component-label">AI Badge</div>
+              <div style="display: flex; gap: var(--space-3); flex-wrap: wrap;">
+                <span class="badge" style="background: var(--color-ai-gradient); color: white; display: inline-flex; align-items: center; gap: 4px;">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+                  </svg>
+                  AI-Powered
+                </span>
+                <span class="badge" style="background: var(--color-ai-gradient-subtle); color: var(--color-ai-purple); border: 1px solid rgba(168, 85, 247, 0.2);">
+                  Intelligent
+                </span>
+              </div>
+            </div>
+
+            <div class="component-example" style="background: white;">
+              <div class="component-label">Gradient Card with Glow</div>
+              <div class="card" style="background: var(--color-ai-gradient-subtle); border: 1px solid rgba(168, 85, 247, 0.2); box-shadow: var(--glow-ai);">
+                <div class="card-title" style="color: var(--color-ai-purple);">AI Insight</div>
+                <div class="card-text">Enhanced with AI gradient and glow effect</div>
+              </div>
+            </div>
+
+            <div class="component-example">
+              <div class="component-label">Sparkle Icon (Animated)</div>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="animation: float 3s ease-in-out infinite;">
+                <defs>
+                  <linearGradient id="sparkle-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color: #a855f7; stop-opacity: 1" />
+                    <stop offset="50%" style="stop-color: #3b82f6; stop-opacity: 1" />
+                    <stop offset="100%" style="stop-color: #06b6d4; stop-opacity: 1" />
+                  </linearGradient>
+                </defs>
+                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="url(#sparkle-gradient)"/>
+              </svg>
+            </div>
+
+            <div class="component-example">
+              <div class="component-label">Success Badge with Glow</div>
+              <span class="badge badge-success" style="animation: success-pulse 2s ease-in-out infinite;">
+                ✓ Success
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3 class="subsection-title">Animations & Effects (NEW)</h3>
+          <div class="component-grid">
+            <div class="component-example">
+              <div class="component-label">Hover Lift Effect</div>
+              <div class="card" style="transition: transform 200ms, box-shadow 200ms; cursor: pointer;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='var(--shadow-lg)'" onmouseout="this.style.transform=''; this.style.boxShadow=''">
+                <div class="card-text">Hover to see lift effect</div>
+              </div>
+            </div>
+
+            <div class="component-example">
+              <div class="component-label">Shimmer Loading</div>
+              <div style="width: 100%; height: 60px; background: var(--color-neutral-100); border-radius: var(--radius-md); position: relative; overflow: hidden;">
+                <div class="shimmer" style="position: absolute; inset: 0;"></div>
+              </div>
+            </div>
+
+            <div class="component-example">
+              <div class="component-label">Glassmorphism</div>
+              <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: var(--space-8); border-radius: var(--radius-lg);">
+                <div style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); padding: var(--space-4); border-radius: var(--radius-md); color: white;">
+                  Glass effect with blur
+                </div>
+              </div>
+            </div>
+
+            <div class="component-example">
+              <div class="component-label">Gradient Text</div>
+              <h2 style="background: var(--color-ai-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: bold; font-size: var(--font-size-2xl);">
+                AI-Powered Platform
+              </h2>
             </div>
           </div>
         </div>
