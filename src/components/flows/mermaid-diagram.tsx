@@ -1,11 +1,13 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import mermaid from "mermaid";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AlertTriangle, ZoomIn, ZoomOut, Maximize2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+
+// Dynamically import mermaid to avoid chunk loading issues with Next.js
+const mermaidPromise = import("mermaid").then((mod) => mod.default);
 
 export interface MermaidDiagramProps {
   diagram: string;
@@ -26,50 +28,67 @@ export function MermaidDiagram({ diagram, className, onError }: MermaidDiagramPr
 
   // Initialize mermaid with custom theme matching Keboola design
   useEffect(() => {
-    mermaid.initialize({
-      startOnLoad: false,
-      theme: "base",
-      themeVariables: {
-        // Primary colors - Keboola blue
-        primaryColor: "#e0f2ff", // --color-primary-50
-        primaryTextColor: "#003d7a", // --color-primary-800
-        primaryBorderColor: "#1F8FFF", // --color-primary-500
-        lineColor: "#0066cc", // --color-primary-600
+    let isMounted = true;
 
-        // Secondary colors
-        secondaryColor: "#fff3e0", // --color-warning-50
-        secondaryTextColor: "#c2410c", // --color-warning-700
-        secondaryBorderColor: "#f97316", // --color-warning-500
+    const initializeMermaid = async () => {
+      try {
+        const mermaid = await mermaidPromise;
+        if (isMounted) {
+          mermaid.initialize({
+            startOnLoad: false,
+            theme: "base",
+            themeVariables: {
+              // Primary colors - Keboola blue
+              primaryColor: "#e0f2ff", // --color-primary-50
+              primaryTextColor: "#003d7a", // --color-primary-800
+              primaryBorderColor: "#1F8FFF", // --color-primary-500
+              lineColor: "#0066cc", // --color-primary-600
 
-        // Tertiary colors
-        tertiaryColor: "#e0ffe0", // --color-success-50
-        tertiaryTextColor: "#15803d", // --color-success-700
-        tertiaryBorderColor: "#22c55e", // --color-success-500
+              // Secondary colors
+              secondaryColor: "#fff3e0", // --color-warning-50
+              secondaryTextColor: "#c2410c", // --color-warning-700
+              secondaryBorderColor: "#f97316", // --color-warning-500
 
-        // Background and text
-        background: "#ffffff",
-        mainBkg: "#f9fafb", // --color-neutral-50
-        textColor: "#1f2937", // --color-neutral-800
+              // Tertiary colors
+              tertiaryColor: "#e0ffe0", // --color-success-50
+              tertiaryTextColor: "#15803d", // --color-success-700
+              tertiaryBorderColor: "#22c55e", // --color-success-500
 
-        // Node styling
-        nodeBorder: "#1F8FFF", // --color-primary-500
-        clusterBkg: "#f3f4f6", // --color-neutral-100
-        clusterBorder: "#d1d5db", // --color-neutral-300
+              // Background and text
+              background: "#ffffff",
+              mainBkg: "#f9fafb", // --color-neutral-50
+              textColor: "#1f2937", // --color-neutral-800
 
-        // Edge styling
-        edgeLabelBackground: "#ffffff",
+              // Node styling
+              nodeBorder: "#1F8FFF", // --color-primary-500
+              clusterBkg: "#f3f4f6", // --color-neutral-100
+              clusterBorder: "#d1d5db", // --color-neutral-300
 
-        // Font
-        fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-        fontSize: "14px",
-      },
-      flowchart: {
-        htmlLabels: true,
-        curve: "basis",
-        padding: 20,
-      },
-      securityLevel: "strict",
-    });
+              // Edge styling
+              edgeLabelBackground: "#ffffff",
+
+              // Font
+              fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+              fontSize: "14px",
+            },
+            flowchart: {
+              htmlLabels: true,
+              curve: "basis",
+              padding: 20,
+            },
+            securityLevel: "strict",
+          });
+        }
+      } catch (error) {
+        console.error("[Mermaid] Initialization failed:", error);
+      }
+    };
+
+    initializeMermaid();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   // Render mermaid diagram
@@ -104,6 +123,9 @@ export function MermaidDiagram({ diagram, className, onError }: MermaidDiagramPr
         if (!diagram.trim()) {
           throw new Error("Diagram content is empty");
         }
+
+        // Dynamically import mermaid for rendering
+        const mermaid = await mermaidPromise;
 
         // Render the diagram
         const { svg } = await mermaid.render(diagramId, diagram);
