@@ -116,7 +116,17 @@ function getComponentIconUrl(componentId: string, components?: Component[]): str
   if (!components) return undefined;
 
   const component = components.find((c) => c.id === componentId);
-  return component?.icon?.[32] || component?.icon?.[64];
+  const iconUrl = component?.icon?.[32] || component?.icon?.[64];
+
+  // Log to help debug icon loading
+  if (!iconUrl && component) {
+    console.log(`[ConfigSummary] No icon URL for component: ${componentId}`, {
+      hasIcon: !!component.icon,
+      icon: component.icon,
+    });
+  }
+
+  return iconUrl;
 }
 
 /**

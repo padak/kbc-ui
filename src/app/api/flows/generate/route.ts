@@ -34,6 +34,14 @@ async function fetchComponents(token: string, stackUrl: string): Promise<Compone
     }
 
     const data = await response.json();
+
+    // Log sample component to see if icons are included
+    if (data && data.length > 0) {
+      console.log('[Components API] Sample component:', JSON.stringify(data[0], null, 2));
+      console.log('[Components API] Total components:', data.length);
+      console.log('[Components API] First component has icon?', !!data[0].icon);
+    }
+
     return data as Component[];
   } catch (error) {
     console.error('Error fetching components:', error);
