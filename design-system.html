@@ -55,25 +55,25 @@
       --color-neutral-800: #1f2937;
       --color-neutral-900: #111827;
 
-      /* Success - Green */
-      --color-success-50: #e0ffe0;
-      --color-success-500: #22c55e;
-      --color-success-700: #15803d;
+      /* Success - Green (Tailwind Green-500) */
+      --color-success-50: #f0fdf4;
+      --color-success-500: #10B981;
+      --color-success-700: #047857;
 
-      /* Warning - Orange */
-      --color-warning-50: #fff3e0;
-      --color-warning-500: #f97316;
-      --color-warning-700: #c2410c;
+      /* Warning - Amber (Tailwind Amber-500) */
+      --color-warning-50: #fffbeb;
+      --color-warning-500: #F59E0B;
+      --color-warning-700: #b45309;
 
-      /* Error - Red */
-      --color-error-50: #ffe0e0;
-      --color-error-500: #ef4444;
+      /* Error - Red (Tailwind Red-500) */
+      --color-error-50: #fef2f2;
+      --color-error-500: #EF4444;
       --color-error-700: #b91c1c;
 
-      /* Info - Cyan */
-      --color-info-50: #e0f9ff;
-      --color-info-500: #06b6d4;
-      --color-info-700: #0e7490;
+      /* Info - Blue (Tailwind Blue-500) */
+      --color-info-50: #eff6ff;
+      --color-info-500: #3B82F6;
+      --color-info-700: #1d4ed8;
 
       /* ===== AI THEME COLORS ===== */
       /* AI Gradient - Purple/Blue/Cyan for AI-powered features */
@@ -765,7 +765,7 @@
             </div>
             <div class="component-example">
               <div class="component-label">Button Sizes</div>
-              <div style="display: flex; gap: var(--space-2); align-items: center;">
+              <div style="display: flex; gap: var(--space-2); align-items: center; flex-wrap: wrap;">
                 <button class="btn btn-primary btn-sm">Small</button>
                 <button class="btn btn-primary">Medium</button>
                 <button class="btn btn-primary btn-lg">Large</button>
@@ -822,18 +822,16 @@
           <h3 class="subsection-title">AI Components (NEW)</h3>
           <div class="component-grid">
             <div class="component-example">
-              <div class="component-label">AI Badge</div>
-              <div style="display: flex; gap: var(--space-3); flex-wrap: wrap;">
+              <div class="component-label">AI Badge with Icons</div>
+              <div style="display: flex; gap: var(--space-3); flex-wrap: wrap; margin-bottom: var(--space-4);">
                 <span class="badge" style="background: var(--color-ai-gradient); color: white; display: inline-flex; align-items: center; gap: 4px;">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
-                  </svg>
-                  AI-Powered
+                  ✨ AI-Powered
                 </span>
-                <span class="badge" style="background: var(--color-ai-gradient-subtle); color: var(--color-ai-purple); border: 1px solid rgba(168, 85, 247, 0.2);">
-                  Intelligent
+                <span class="badge" style="background: var(--color-ai-gradient-subtle); color: var(--color-ai-purple); border: 1px solid rgba(168, 85, 247, 0.2); display: inline-flex; align-items: center; gap: 4px;">
+                  ⚡ Intelligent
                 </span>
               </div>
+              <div style="font-size: var(--font-size-xs); color: var(--color-neutral-600); margin-top: var(--space-2); font-style: italic;">Use Lucide React: &lt;Sparkles /&gt;, &lt;Zap /&gt;</div>
             </div>
 
             <div class="component-example" style="background: white;">
@@ -845,24 +843,23 @@
             </div>
 
             <div class="component-example">
-              <div class="component-label">Sparkle Icon (Animated)</div>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="animation: float 3s ease-in-out infinite;">
-                <defs>
-                  <linearGradient id="sparkle-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" style="stop-color: #a855f7; stop-opacity: 1" />
-                    <stop offset="50%" style="stop-color: #3b82f6; stop-opacity: 1" />
-                    <stop offset="100%" style="stop-color: #06b6d4; stop-opacity: 1" />
-                  </linearGradient>
-                </defs>
-                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="url(#sparkle-gradient)"/>
-              </svg>
+              <div class="component-label">Animated Icon</div>
+              <div style="display: flex; align-items: center; justify-content: center; padding: var(--space-6); margin-bottom: var(--space-4);">
+                <div style="font-size: 48px; animation: float 3s ease-in-out infinite;">
+                  ✨
+                </div>
+              </div>
+              <div style="font-size: var(--font-size-xs); color: var(--color-neutral-600); font-style: italic;">Use: &lt;Sparkles className="animate-float" /&gt;</div>
             </div>
 
             <div class="component-example">
-              <div class="component-label">Success Badge with Glow</div>
-              <span class="badge badge-success" style="animation: success-pulse 2s ease-in-out infinite;">
-                ✓ Success
-              </span>
+              <div class="component-label">Success Badge with Icon</div>
+              <div style="margin-bottom: var(--space-4);">
+                <span class="badge badge-success" style="animation: success-pulse 2s ease-in-out infinite; display: inline-flex; align-items: center; gap: 4px;">
+                  ✓ Success
+                </span>
+              </div>
+              <div style="font-size: var(--font-size-xs); color: var(--color-neutral-600); font-style: italic;">Use: &lt;CheckCircle2 className="w-3 h-3" /&gt;</div>
             </div>
           </div>
         </div>
@@ -938,6 +935,47 @@ module.exports = {
 &lt;button className="bg-primary-500 text-white px-4 py-2 rounded-md"&gt;
   Click me
 &lt;/button&gt;</pre>
+
+          <h3 style="margin-top: var(--space-6); margin-bottom: var(--space-3);">How to Use Lucide React Icons</h3>
+          <p style="margin-bottom: var(--space-4);">Always use Lucide React icons - never hard-code SVGs. Consistent design, tree-shakeable, 1000+ icons.</p>
+
+          <p style="margin-bottom: var(--space-2);"><strong>1. Import from lucide-react:</strong></p>
+          <pre style="background: var(--color-neutral-900); color: var(--color-neutral-50); padding: var(--space-4); border-radius: var(--radius-md); overflow-x: auto; font-family: var(--font-family-mono); font-size: var(--font-size-sm);">
+import { Database, Activity, Sparkles, CheckCircle2 } from 'lucide-react'</pre>
+
+          <p style="margin-top: var(--space-4); margin-bottom: var(--space-2);"><strong>2. Use in components with size classes:</strong></p>
+          <pre style="background: var(--color-neutral-900); color: var(--color-neutral-50); padding: var(--space-4); border-radius: var(--radius-md); overflow-x: auto; font-family: var(--font-family-mono); font-size: var(--font-size-sm);">
+{/* Small icons: 16px (w-4 h-4) */}
+&lt;Sparkles className="w-4 h-4" /&gt;
+
+{/* Medium icons: 20px (w-5 h-5) */}
+&lt;Activity className="w-5 h-5" /&gt;
+
+{/* Large icons: 24px (w-6 h-6) */}
+&lt;Database className="w-6 h-6" /&gt;</pre>
+
+          <p style="margin-top: var(--space-4); margin-bottom: var(--space-2);"><strong>3. Apply colors with Tailwind or CSS variables:</strong></p>
+          <pre style="background: var(--color-neutral-900); color: var(--color-neutral-50); padding: var(--space-4); border-radius: var(--radius-md); overflow-x: auto; font-family: var(--font-family-mono); font-size: var(--font-size-sm);">
+{/* Using Tailwind classes */}
+&lt;CheckCircle2 className="w-4 h-4 text-success-500" /&gt;
+
+{/* Using CSS variables for AI theme */}
+&lt;Sparkles
+  className="w-5 h-5"
+  style={{ color: 'var(--color-ai-purple)' }}
+/&gt;</pre>
+
+          <p style="margin-top: var(--space-4); margin-bottom: var(--space-2);"><strong>4. Common icons for this project:</strong></p>
+          <ul style="margin-left: var(--space-6); margin-bottom: var(--space-4);">
+            <li>Database, Table (Storage)</li>
+            <li>Activity, Clock (Jobs)</li>
+            <li>Workflow, GitBranch (Flows)</li>
+            <li>Users, UserCog (Team)</li>
+            <li>Sparkles, Zap (AI features)</li>
+            <li>CheckCircle2, AlertCircle, X (Status/Actions)</li>
+          </ul>
+
+          <p style="background: var(--color-warning-50); border-left: 4px solid var(--color-warning-500); padding: var(--space-4); border-radius: var(--radius-md); margin-top: var(--space-4);"><strong>⚠️ Best Practice:</strong> Never hard-code SVG paths in components. Always use Lucide React. This ensures consistency across the entire UI and makes icons easily themeable.</p>
         </div>
       </div>
     </div>
