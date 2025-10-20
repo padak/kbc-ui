@@ -6,6 +6,9 @@ This folder contains all documentation for building the **new Keboola Connection
 
 ```
 docs/
+├── README.md             # 📖 This file - Documentation index
+├── HISTORY.md            # 📜 Project history (Phases 1-7)
+│
 ├── build-specs/          # 🔨 BUILD SPECS - Use these to build new features
 │   ├── INITIAL_PROMPT.md
 │   ├── technical-stack.md       ✅ Implementation status
@@ -156,6 +159,20 @@ The `research/` folder contains **109 files** documenting the original UI. Here'
 
 ---
 
+## 📜 Project History
+
+**Want to understand how we got here?**
+
+See **`HISTORY.md`** for complete project history including:
+- ✅ Phase 1-7 summaries
+- ✅ AI-assisted documentation methodology
+- ✅ 17 parallel agents analyzing 49 modules
+- ✅ Complete statistics and coverage metrics
+- ✅ Lessons learned and strategic insights
+
+---
+
 **Repository:** https://github.com/padak/kbc-ui
 **Tech Stack:** Next.js 15, React 19, TypeScript, Tailwind CSS, shadcn/ui
 **Start Development:** `pnpm dev` or `make dev`
+**Working Memory:** See `/CLAUDE.md` for current status and workflows
