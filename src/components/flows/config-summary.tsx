@@ -60,18 +60,18 @@ export interface ConfigSummaryProps {
 // ============================================================================
 
 /**
- * Get emoji icon based on phase name/type
+ * Get Lucide icon component based on phase name/type
  */
-function getPhaseEmoji(phaseName: string): string {
+function getPhaseIconComponent(phaseName: string) {
   const lowerName = phaseName.toLowerCase();
 
-  if (lowerName.includes('extract') || lowerName.includes('source')) return '📦';
-  if (lowerName.includes('transform') || lowerName.includes('process')) return '⚙️';
-  if (lowerName.includes('load') || lowerName.includes('write')) return '💾';
-  if (lowerName.includes('validate') || lowerName.includes('check')) return '✅';
-  if (lowerName.includes('notify') || lowerName.includes('alert')) return '📧';
+  if (lowerName.includes('extract') || lowerName.includes('source')) return Database;
+  if (lowerName.includes('transform') || lowerName.includes('process')) return Cog;
+  if (lowerName.includes('load') || lowerName.includes('write')) return Package;
+  if (lowerName.includes('validate') || lowerName.includes('check')) return CheckCircle2;
+  if (lowerName.includes('notify') || lowerName.includes('alert')) return AlertTriangle;
 
-  return '📋'; // Default
+  return FileText; // Default
 }
 
 /**
@@ -144,6 +144,7 @@ export default function ConfigSummary({
   warnings = [],
 }: ConfigSummaryProps) {
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [failedIconIds, setFailedIconIds] = useState<Set<string>>(new Set());
 
   // Count total tasks
   const totalTasks = configuration.tasks.length;
@@ -211,6 +212,11 @@ export default function ConfigSummary({
                       const componentName = getComponentName(task.componentId, components);
                       const componentIconUrl = getComponentIconUrl(task.componentId, components);
                       const phaseName = getPhaseName(task.phase, configuration);
+                      const showFallbackIcon = !componentIconUrl || failedIconIds.has(task.id);
+
+                      const handleImageError = () => {
+                        setFailedIconIds((prev) => new Set([...prev, task.id]));
+                      };
 
                       return (
                         <TableRow
@@ -220,21 +226,18 @@ export default function ConfigSummary({
                           {/* Component Name + Icon */}
                           <TableCell className="font-medium">
                             <div className="flex items-center gap-2">
-                              {componentIconUrl ? (
+                              {!showFallbackIcon && componentIconUrl && (
                                 // Use actual component icon from API
                                 <img
                                   src={componentIconUrl}
                                   alt={componentName}
                                   className="h-6 w-6 shrink-0 object-contain"
-                                  onError={(e) => {
-                                    // Fallback to Lucide icon if image fails to load
-                                    const img = e.currentTarget;
-                                    img.style.display = 'none';
-                                    img.nextElementSibling?.classList.remove('hidden');
-                                  }}
+                                  onError={handleImageError}
                                 />
-                              ) : null}
-                              <Icon className={`h-4 w-4 text-gray-500 shrink-0 ${componentIconUrl ? 'hidden' : ''}`} />
+                              )}
+                              {showFallbackIcon && (
+                                <Icon className="h-5 w-5 text-gray-500 shrink-0" />
+                              )}
                               <span className="truncate">{task.name || componentName}</span>
                             </div>
                           </TableCell>
@@ -278,12 +281,18 @@ export default function ConfigSummary({
 
                           {/* Phase Assignment */}
                           <TableCell>
-                            <Badge
-                              variant="outline"
-                              className="text-xs whitespace-nowrap"
-                            >
-                              {getPhaseEmoji(phaseName)} {phaseName}
-                            </Badge>
+                            <div className="flex items-center gap-2">
+                              {(() => {
+                                const PhaseIcon = getPhaseIconComponent(phaseName);
+                                return <PhaseIcon className="h-4 w-4 text-gray-600" />;
+                              })()}
+                              <Badge
+                                variant="outline"
+                                className="text-xs whitespace-nowrap"
+                              >
+                                {phaseName}
+                              </Badge>
+                            </div>
                           </TableCell>
                         </TableRow>
                       );
@@ -356,7 +365,7 @@ function PhaseCard({
   taskCount: number;
   configuration: FlowConfiguration;
 }) {
-  const emoji = getPhaseEmoji(phase.name);
+  const PhaseIcon = getPhaseIconComponent(phase.name);
 
   // Get dependency phase names
   const dependencyNames = phase.dependsOn.map((depId) => {
@@ -369,7 +378,7 @@ function PhaseCard({
       {/* Phase Header */}
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-center gap-2">
-          <span className="text-2xl">{emoji}</span>
+          <PhaseIcon className="h-5 w-5 text-gray-700 shrink-0" />
           <h4 className="font-semibold text-sm">{phase.name}</h4>
         </div>
         <Badge variant="secondary" className="text-xs">
