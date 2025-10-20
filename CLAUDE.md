@@ -1,8 +1,8 @@
 # Claude Session Knowledge - Keboola UI Rebuild Project
 
-**Last Updated**: 2025-10-19
-**Session**: Phase 6 - Initial Implementation COMPLETE
-**Repository**: `https://github.com/padak/kbc-ui` (main branch)
+**Last Updated**: 2025-10-20
+**Session**: Phase 7 - Flow Feature Development (IN PROGRESS)
+**Repository**: `https://github.com/padak/kbc-ui` (feature/flow branch)
 
 ---
 
@@ -284,8 +284,12 @@ kbc-ui-padak/
 ```
 
 **Key Decisions:**
-- ✅ CSS Custom Properties as design tokens (single source of truth)
-- ✅ Manual design system sync workflow (preview → implementation)
+- ✅ **Design System Workflow**: Single source of truth with automated sync
+  - `design-system.html` = source of truth (never edit globals.css directly!)
+  - `make sync-design` = automated sync to `src/app/globals.css`
+  - `scripts/sync-design-tokens.js` = extracts & propagates CSS custom properties
+  - Change workflow: Edit design-system.html → Run sync → Restart dev server
+- ✅ CSS Custom Properties as design tokens (93 tokens total)
 - ✅ Documentation reorganized into build-specs/, implementation/, research/
 - ✅ Comprehensive usage guides to ensure research is actively used
 - ✅ Latest stable versions (Next.js 15, React 19) for future-proofing
@@ -438,24 +442,36 @@ docs/research/
 
 ## 🗂️ Documentation Organization
 
-### 📁 Current Structure (Phase 6.5)
+### 📁 Current Structure (Phase 7)
 
 ```
 docs/
 ├── README.md                 # Complete usage guide
 ├── build-specs/              # 🔨 BUILD SPECS for new features
-│   ├── technical-stack.md
-│   ├── dashboard-spec.md
+│   ├── INITIAL_PROMPT.md
+│   ├── README.md
+│   ├── as-of-now-ui.md
 │   ├── auth-flow.md
+│   ├── dashboard-spec.md
 │   ├── design-system.md
-│   └── implementation-plan.md
+│   ├── flow-spec.md          # Flow feature specification
+│   ├── implementation-plan.md
+│   └── technical-stack.md
 ├── implementation/           # 📝 IMPLEMENTATION GUIDES
 │   ├── CODE_REFERENCE.md
 │   ├── FEATURES_QUICK_START.md
 │   ├── FEATURES_IMPLEMENTATION.md
 │   ├── DESIGN_SYSTEM_AUDIT.md
-│   └── HOW-TO-CHANGE-DESIGN-SYSTEM.md
+│   ├── HOW-TO-CHANGE-DESIGN-SYSTEM.md
+│   ├── AI_FLOW_GENERATION_ENDPOINT.md
+│   ├── flow/                 # Flow component implementation docs
+│   │   ├── FLOWS_PAGE_IMPLEMENTATION.md
+│   │   ├── MERMAID_COMPONENT_COMPLETE.md
+│   │   └── PHASE_1_COMPLETE.md
+│   ├── dashboard/            # (Future) Dashboard implementation docs
+│   └── storage/              # (Future) Storage implementation docs
 └── research/                 # 📚 RESEARCH MATERIAL
+    ├── README.md
     ├── legacy-ui/            # Old UI reference (109 files)
     │   ├── 01-overview/
     │   ├── 02-modules/       # 49 module analyses
@@ -466,10 +482,27 @@ docs/
     │   ├── 07-state-management/
     │   ├── 08-screenshots/
     │   ├── 09-migration-plan/
-    │   └── *.md              # Meta-docs
+    │   └── *.md              # Meta-docs (PHASE_*, AGENT_PROMPTS, etc.)
     └── new-ui/               # New UI research (3+ files)
         └── flows/            # Flow Builder research
 ```
+
+**Organization Pattern:**
+
+**build-specs/** - Specifications BEFORE building
+- Feature specs written before implementation starts
+- Technical decisions and requirements
+- Example: `flow-spec.md` written before coding flows
+
+**implementation/** - Documentation DURING/AFTER building
+- Component-specific subfolders (e.g., `flow/`, `dashboard/`)
+- Implementation notes, decisions, completion reports
+- Created as features are built
+- Example: `implementation/flow/PHASE_1_COMPLETE.md` after Flow page is done
+
+**research/** - Background research
+- `legacy-ui/` - Analysis of old Keboola UI
+- `new-ui/[component]/` - Research for new components (React Flow, n8n, etc.)
 
 ### 🤖 FOR AI SYSTEMS
 
@@ -772,13 +805,21 @@ docs/
 
 ## 📝 Project Status
 
-**Current Status**: ✅ PHASE 6 COMPLETE - READY TO MERGE
+**Current Status**: 🚧 PHASE 7 IN PROGRESS - Flow Feature Development
 
 **Phase Status:**
 - ✅ Phase 1-5: Planning & Analysis (COMPLETE)
 - ✅ Phase 6: Initial Implementation (COMPLETE)
 - ✅ Phase 6.5: Documentation Consolidation & Organization (COMPLETE)
-- 🚀 **Next: Merge to main + API Integration**
+- 🚧 **Phase 7: Flow Feature** (IN PROGRESS)
+  - ✅ Flow specification (flow-spec.md)
+  - ✅ AI Flow Creator with Mermaid diagrams
+  - ✅ Flow list page with search/filters
+  - ✅ AI generation endpoint (Claude Haiku 4.5)
+  - 🚧 Mermaid diagram rendering (debugging)
+  - ⏳ Flow detail view
+  - ⏳ Flow execution
+- 🔜 **Next: Complete Flow feature + Storage page**
 
 **What's Built:**
 - ✅ Next.js 15.5.6 + React 19.2.0 application running
@@ -786,16 +827,23 @@ docs/
 - ✅ Dashboard page with preview data (AI-powered insights, collapsible activity)
 - ✅ Sidebar navigation (collapsible, persistent state)
 - ✅ AI chat interface (floating button, ⌘K shortcut)
-- ✅ Design system with CSS custom properties
+- ✅ Design system with CSS custom properties + AI theme colors
 - ✅ shadcn/ui component library
-- ✅ Developer workflow (Makefile)
+- ✅ Developer workflow (Makefile, design system sync)
 - ✅ Production-ready documentation structure
+- ✅ **Flows page** with search, filters, empty state
+- ✅ **AI Flow Creator** modal (3-step wizard)
+- ✅ **AI generation endpoint** (/api/flows/generate) with Claude Haiku 4.5
+- ✅ Mermaid diagram component (debugging rendering)
+- ✅ Flow card component with status badges
+- ✅ TanStack Query integration for API calls
 
 **What's Next:**
-- ⏳ Add TanStack Query for API calls
+- 🐛 Fix Mermaid rendering (currently debugging)
+- ⏳ Flow detail view page
+- ⏳ Flow execution functionality
 - ⏳ Implement real dashboard data with polling
 - ⏳ Build Storage page (buckets/tables)
-- ⏳ Build Flows page
 - ⏳ Build Jobs monitoring page
 
 **Repository:**
@@ -830,37 +878,43 @@ make build
 
 ---
 
-**Last Updated**: 2025-10-19
-**Total Project**: ~133 files, ~55,700 lines, ~1.73 MB
+**Last Updated**: 2025-10-20
+**Total Project**: ~150+ files, ~60,000+ lines, ~1.8 MB
 **Implementation**: Next.js 15.5.6 + React 19.2.0 + TypeScript 5.9.3
 
 **Tech Stack (Actual):**
-- Keboola blue: #1F8FFF
+- Design System: Keboola blue (#1F8FFF) + AI theme colors (purple→blue→cyan)
 - Next.js 15.5.6 + TypeScript 5.9.3 + Tailwind CSS 3.4.18
-- shadcn/ui (Button, Card, Badge, Input, Select)
+- shadcn/ui (Button, Card, Badge, Input, Select, Dialog, Accordion, Alert, Skeleton, Textarea)
+- TanStack Query 5.x (data fetching, caching, polling)
+- Mermaid 11.12.0 (flow diagrams)
+- Lucide React (icons)
 - ESLint 9.38.0, pnpm 10.15.0
 - Local dev: `pnpm dev`
 - Auth: API token + Stack URL (localStorage)
-- Polling: 5s (jobs), 30s (stats) - **To be implemented**
+- AI: Claude Haiku 4.5 (ANTHROPIC_API_KEY + ANTHROPIC_MODEL env vars)
 
 **Git Status:**
 - Branch: `feature/flow`
-- Status: 5 commits ahead of origin
-- Working tree: clean
-- Ready to: merge to main
+- Status: Working on Flow feature
+- Working tree: Modified (mermaid debugging)
+- Ready to: Continue Flow implementation
 
-**Recent Commits (feature/flow):**
-1. `a2e4f72` - docs: reorganize research folder into legacy-ui and new-ui
-2. `d10258d` - chore: minor fixes from sub-agent work
-3. `73ec6ba` - docs: update dashboard-spec.md to reflect actual implementation
-4. `43f1a98` - docs: reorganize folder structure for clarity and production readiness
-5. `ed8d9c4` - docs: consolidate documentation from 10 files to 4 files
+**Phase 7 Progress:**
+- ✅ Flow specification complete
+- ✅ AI Flow Creator with 3-step wizard
+- ✅ Flow list page with search/filters
+- ✅ AI generation endpoint with Claude
+- ✅ Anthropic API optimization (70% cost reduction)
+- ✅ Design system compliance fixes
+- 🚧 Mermaid rendering (debugging in progress)
+- ⏳ Flow detail view
+- ⏳ Flow execution
 
-**Documentation Improvements:**
-- ✅ Consolidated 10 files → 4 files (40% reduction in redundancy)
-- ✅ Reorganized into build-specs/, implementation/, research/
-- ✅ Updated dashboard-spec.md to match actual build (309 → 777 lines)
-- ✅ Research reorganized into legacy-ui/ and new-ui/ (112 files)
-- ✅ Production-ready structure for team collaboration
+**Documentation Organization:**
+- ✅ Component-based implementation docs (`docs/implementation/flow/`)
+- ✅ Build specs updated (flow-spec.md added)
+- ✅ Design system synchronized (design-system.md ↔ design-system.html)
+- ✅ Research organized by UI version (legacy-ui/ vs new-ui/)
 
-*Foundation complete - Documentation production-ready - Ready to merge!*
+*Phase 7 in progress - Flow feature under development - Debugging Mermaid diagrams*

@@ -117,9 +117,21 @@ ${Object.entries(tokens)
   .map(([k, v]) => `    --${k}: ${v};`)
   .join('\n')}
 
-    /* Info - Cyan */
+    /* Info - Blue */
 ${Object.entries(tokens)
   .filter(([k]) => k.startsWith('color-info-'))
+  .map(([k, v]) => `    --${k}: ${v};`)
+  .join('\n')}
+
+    /* AI Theme - Purple to Blue to Cyan Gradient */
+${Object.entries(tokens)
+  .filter(([k]) => k.startsWith('color-ai-'))
+  .map(([k, v]) => `    --${k}: ${v};`)
+  .join('\n')}
+
+    /* Glow Effects */
+${Object.entries(tokens)
+  .filter(([k]) => k.startsWith('glow-'))
   .map(([k, v]) => `    --${k}: ${v};`)
   .join('\n')}
 

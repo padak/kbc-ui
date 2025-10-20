@@ -22,6 +22,23 @@ error: '#EF4444',     // Red-500
 info: '#3B82F6',      // Blue-500
 ```
 
+### AI Theme Colors (AI-Powered Features)
+```typescript
+aiPurple: '#a855f7',  // Purple-500 (AI gradient start)
+aiBlue: '#3b82f6',    // Blue-500 (AI gradient middle)
+aiCyan: '#06b6d4',    // Cyan-500 (AI gradient end)
+
+// CSS Gradient for AI features
+aiGradient: 'linear-gradient(135deg, #a855f7, #3b82f6, #06b6d4)'
+aiGradientSubtle: 'linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(59, 130, 246, 0.1), rgba(6, 182, 212, 0.1))'
+
+// Glow effects
+glowAi: '0 0 20px rgba(168, 85, 247, 0.3)'
+glowAiStrong: '0 0 30px rgba(168, 85, 247, 0.5), 0 0 60px rgba(59, 130, 246, 0.3)'
+```
+
+**Usage:** Only use AI theme colors for AI-powered features (AI Flow Creator, AI Assistant, AI badges). Use primary blue for standard UI actions.
+
 ### Neutrals (Tailwind Defaults)
 ```typescript
 gray-50 to gray-950   // Use for text, backgrounds, borders

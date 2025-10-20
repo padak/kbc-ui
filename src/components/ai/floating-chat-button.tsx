@@ -44,7 +44,7 @@ export function FloatingChatButton() {
         </div>
 
         {/* Pulse ring animation with AI colors */}
-        <div className="absolute inset-0 rounded-full border-2 border-purple-400 animate-ping opacity-75" />
+        <div className="absolute inset-0 rounded-full border-2 border-[#a855f7] animate-ping opacity-75" />
       </button>
 
       {/* Command Palette */}
