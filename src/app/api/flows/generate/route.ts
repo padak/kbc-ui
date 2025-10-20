@@ -35,14 +35,29 @@ async function fetchComponents(token: string, stackUrl: string): Promise<Compone
 
     const data = await response.json();
 
-    // Log sample component to see if icons are included
-    if (data && data.length > 0) {
-      console.log('[Components API] Sample component:', JSON.stringify(data[0], null, 2));
-      console.log('[Components API] Total components:', data.length);
-      console.log('[Components API] First component has icon?', !!data[0].icon);
+    // Transform API response to our Component format
+    // Keboola API returns icons as ico32, ico64, ico128
+    // We transform them to our expected icon format
+    const transformedComponents: Component[] = data.map((c: any) => ({
+      id: c.id,
+      name: c.name,
+      type: c.type,
+      icon: c.ico32 || c.ico64 || c.ico128
+        ? {
+            '32': c.ico32,
+            '64': c.ico64,
+          }
+        : undefined,
+    }));
+
+    // Log sample component to verify transformation
+    if (transformedComponents && transformedComponents.length > 0) {
+      console.log('[Components API] Transformed component:', JSON.stringify(transformedComponents[0], null, 2));
+      console.log('[Components API] Total components:', transformedComponents.length);
+      console.log('[Components API] First component has icon?', !!transformedComponents[0].icon);
     }
 
-    return data as Component[];
+    return transformedComponents;
   } catch (error) {
     console.error('Error fetching components:', error);
     throw new Error('Failed to fetch available components from Keboola API');
